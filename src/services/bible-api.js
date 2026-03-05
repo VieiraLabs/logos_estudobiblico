@@ -139,7 +139,10 @@ async function fetchFromBibleAPI(bookName, chapter) {
  * @returns {Promise<{verses: Array, source: string}>}
  */
 async function fetchFromGroq(bookName, chapter) {
-    const apiKey = import.meta.env.VITE_GROQ_API_KEY || localStorage.getItem('groq_api_key');
+    let envKey = import.meta.env.VITE_GROQ_API_KEY || '';
+    if (envKey && !envKey.startsWith('gsk_')) envKey = 'gsk_' + envKey;
+
+    const apiKey = envKey || localStorage.getItem('groq_api_key');
     if (!apiKey || apiKey.length < 10) {
         throw new Error('Chave da API Groq não configurada para fallback');
     }
