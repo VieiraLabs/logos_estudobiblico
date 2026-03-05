@@ -2,6 +2,8 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+  // Base path para GitHub Pages
+  base: '/logos_estudobiblico/',
   // Diretório raiz do projeto
   root: '.',
   // Diretório dos assets estáticos
