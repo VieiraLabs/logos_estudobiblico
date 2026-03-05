@@ -54,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Mostrar lista de livros, esconder atalhos
                     bibleNavPanel.classList.remove('hidden');
                     quickActions.style.display = 'none';
-                    if (window.innerWidth <= 1024) closeSidebar();
                     break;
                 case 'study':
                     // Abrir painel de estudo lateral

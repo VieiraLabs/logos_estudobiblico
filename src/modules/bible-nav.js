@@ -125,7 +125,7 @@ export function initBibleNav() {
      */
     function closeMobileSidebar() {
         const sidebar = document.getElementById('sidebar');
-        if (window.innerWidth <= 768 && sidebar) {
+        if (window.innerWidth <= 1024 && sidebar) {
             sidebar.classList.remove('visible');
             const backdrop = document.querySelector('.sidebar-backdrop');
             if (backdrop) backdrop.classList.remove('visible');
