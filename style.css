@@ -110,6 +110,11 @@ body {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+  transition: grid-template-columns var(--transition-base);
+}
+
+.app-layout.panel-closed {
+  grid-template-columns: var(--sidebar-width) 1fr;
 }
 
 /* ================================================
@@ -892,7 +897,8 @@ body {
   outline: none;
   color: var(--text-primary);
   font-family: var(--font-ui);
-  font-size: 0.9rem;
+  font-size: 16px;
+  /* 16px obrigatório previne zoom no iOS iOS Safari */
   line-height: 1.5;
   padding: 8px 0;
   resize: none;
@@ -1663,10 +1669,19 @@ body {
     position: fixed;
     right: 0;
     top: 0;
+    height: 100vh;
     width: var(--panel-width);
-    z-index: 90;
+    z-index: 102;
+    /* Maior que a sidebar */
     transform: translateX(100%);
     box-shadow: var(--shadow-lg);
+    transition: transform var(--transition-base);
+  }
+
+  /* Grid tablet remove explicitamente a 3 coluna pois a direita é overlay */
+  .app-layout,
+  .app-layout.panel-closed {
+    grid-template-columns: var(--sidebar-width) 1fr;
   }
 
   .study-panel.visible {
@@ -1676,7 +1691,9 @@ body {
 
 /* Mobile */
 @media (max-width: 768px) {
-  .app-layout {
+
+  .app-layout,
+  .app-layout.panel-closed {
     grid-template-columns: 1fr;
   }
 
@@ -1737,15 +1754,32 @@ body {
   }
 }
 
-/* Backdrop para sidebars em mobile */
-.sidebar-backdrop {
+.sidebar-backdrop,
+.panel-backdrop {
   display: none;
   position: fixed;
   inset: 0;
   background: hsl(225, 25%, 3%, 0.6);
   z-index: 89;
+  backdrop-filter: blur(2px);
+  transition: opacity var(--transition-fast);
+  opacity: 0;
 }
 
-.sidebar-backdrop.visible {
+.sidebar-backdrop.visible,
+.panel-backdrop.visible {
   display: block;
+  opacity: 1;
+}
+
+.panel-backdrop {
+  z-index: 101;
+  /* Fica acima do conteudo chat e sidebar, pra dar foque ao panel lateral */
+}
+
+/* Tratamento para o header não encolher botão quando titulo for muito grande na tela mobile */
+.chat-header-info {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

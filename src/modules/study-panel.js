@@ -16,6 +16,19 @@ export function initStudyPanel() {
     const btnClosePanel = document.getElementById('btn-close-panel');
     const glossaryContent = document.getElementById('glossary-content');
     const studyNotesContent = document.getElementById('study-notes-content');
+    const appLayout = document.getElementById('app');
+
+    // Sempre inicie com o layout do app fechado para o study panel
+    appLayout.classList.add('panel-closed');
+    studyPanel.classList.add('hidden');
+
+    // Criar backdrop para mobile
+    let panelBackdrop = document.querySelector('.panel-backdrop');
+    if (!panelBackdrop) {
+        panelBackdrop = document.createElement('div');
+        panelBackdrop.className = 'panel-backdrop';
+        document.body.appendChild(panelBackdrop);
+    }
 
     // ---- Renderizar glossário ----
     renderGlossary();
@@ -23,34 +36,36 @@ export function initStudyPanel() {
     // ---- Toggle do painel lateral ----
     if (btnTogglePanel) {
         btnTogglePanel.addEventListener('click', () => {
-            // Em telas grandes, o painel mostra/esconde alterando a grid
             const isHidden = studyPanel.classList.contains('hidden');
             if (isHidden) {
                 studyPanel.classList.remove('hidden');
                 studyPanel.classList.add('visible');
-                // Ajustar grid para 3 colunas
-                document.getElementById('app').style.gridTemplateColumns =
-                    `var(--sidebar-width) 1fr var(--panel-width)`;
+                appLayout.classList.remove('panel-closed');
+                // Backdrop apenas aparece se for telainha menor que desktop (abaixo de 1080px vai depender de css pra backdrop display block)
+                if (window.innerWidth <= 1080) {
+                    panelBackdrop.classList.add('visible');
+                }
             } else {
-                studyPanel.classList.add('hidden');
-                studyPanel.classList.remove('visible');
-                // Ajustar grid para 2 colunas
-                document.getElementById('app').style.gridTemplateColumns =
-                    `var(--sidebar-width) 1fr`;
+                closeSidebarPanel();
             }
         });
     }
 
+    function closeSidebarPanel() {
+        studyPanel.classList.add('hidden');
+        studyPanel.classList.remove('visible');
+        appLayout.classList.add('panel-closed');
+        if (panelBackdrop) panelBackdrop.classList.remove('visible');
+    }
+
     // ---- Fechar painel ----
     if (btnClosePanel) {
-        btnClosePanel.addEventListener('click', () => {
-            studyPanel.classList.add('hidden');
-            studyPanel.classList.remove('visible');
-            if (window.innerWidth > 1080) {
-                document.getElementById('app').style.gridTemplateColumns =
-                    `var(--sidebar-width) 1fr`;
-            }
-        });
+        btnClosePanel.addEventListener('click', closeSidebarPanel);
+    }
+
+    // ---- Fechar painel ao clicar fora em overlay (Mobile/Tablet) ----
+    if (panelBackdrop) {
+        panelBackdrop.addEventListener('click', closeSidebarPanel);
     }
 
     // ---- Escutar respostas do assistente para gerar notas contextuais ----

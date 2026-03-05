@@ -59,10 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     const studyPanel = document.getElementById('study-panel');
                     studyPanel.classList.remove('hidden');
                     studyPanel.classList.add('visible');
-                    // Ajustar grid
-                    if (window.innerWidth > 1080) {
-                        document.getElementById('app').style.gridTemplateColumns =
-                            'var(--sidebar-width) 1fr var(--panel-width)';
+
+                    document.getElementById('app').classList.remove('panel-closed');
+                    if (window.innerWidth <= 1080) {
+                        const panelBackdrop = document.querySelector('.panel-backdrop');
+                        if (panelBackdrop) panelBackdrop.classList.add('visible');
                     }
                     // Manter atalhos
                     bibleNavPanel.classList.add('hidden');
@@ -158,15 +159,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================
     window.addEventListener('resize', () => {
         const studyPanel = document.getElementById('study-panel');
+        const panelBackdrop = document.querySelector('.panel-backdrop');
 
         if (window.innerWidth <= 1080) {
             // Mobile/Tablet — Painel lateral vira overlay
             if (studyPanel && !studyPanel.classList.contains('visible')) {
                 studyPanel.classList.add('hidden');
+                document.getElementById('app').classList.add('panel-closed');
             }
         }
 
-        // Fechar sidebar em resize para desktop
+        if (window.innerWidth > 1080) {
+            // Esconder backdrop overlay se virar monitor grande
+            if (panelBackdrop) panelBackdrop.classList.remove('visible');
+        }
+
+        // Fechar sidebar esquerda em resize para desktop
         if (window.innerWidth > 768) {
             sidebar.classList.remove('visible');
             sidebarBackdrop.classList.remove('visible');
