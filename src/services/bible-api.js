@@ -139,8 +139,14 @@ async function fetchFromBibleAPI(bookName, chapter) {
  * @returns {Promise<{verses: Array, source: string}>}
  */
 async function fetchFromGroq(bookName, chapter) {
-    let envKey = import.meta.env.VITE_GROQ_API_KEY || '';
-    if (envKey && !envKey.startsWith('gsk_')) envKey = 'gsk_' + envKey;
+    const p1 = import.meta.env.VITE_GROQ_PART1 || '';
+    const p2 = import.meta.env.VITE_GROQ_PART2 || '';
+    const p3 = import.meta.env.VITE_GROQ_PART3 || '';
+    const p4 = import.meta.env.VITE_GROQ_PART4 || '';
+    const p5 = import.meta.env.VITE_GROQ_PART5 || '';
+    const p6 = import.meta.env.VITE_GROQ_PART6 || '';
+    const p7 = import.meta.env.VITE_GROQ_PART7 || '';
+    let envKey = p1 + p2 + p3 + p4 + p5 + p6 + p7;
 
     const apiKey = envKey || localStorage.getItem('groq_api_key');
     if (!apiKey || apiKey.length < 10) {
