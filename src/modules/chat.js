@@ -57,6 +57,14 @@ export function initChat() {
 
     // ---- Botão "Nova Conversa" ----
     btnNewChat.addEventListener('click', () => {
+        // Fechar a sidebar no mobile/tablet
+        if (window.innerWidth <= 1024) {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarBackdrop = document.querySelector('.sidebar-backdrop');
+            if (sidebar) sidebar.classList.remove('visible');
+            if (sidebarBackdrop) sidebarBackdrop.classList.remove('visible');
+        }
+
         // Limpar histórico
         aiService.clearHistory();
         chatStarted = false;
@@ -96,6 +104,14 @@ export function initChat() {
         btn.addEventListener('click', () => {
             const prompt = btn.dataset.prompt;
             if (prompt) {
+                // Fechar sidebar no mobile/tablet ao clicar no atalho
+                if (window.innerWidth <= 1024) {
+                    const sidebar = document.getElementById('sidebar');
+                    const sidebarBackdrop = document.querySelector('.sidebar-backdrop');
+                    if (sidebar) sidebar.classList.remove('visible');
+                    if (sidebarBackdrop) sidebarBackdrop.classList.remove('visible');
+                }
+
                 chatInput.value = prompt;
                 btnSend.disabled = false;
                 sendMessage();

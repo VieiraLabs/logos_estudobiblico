@@ -48,11 +48,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Mostrar atalhos rápidos, esconder livros
                     bibleNavPanel.classList.add('hidden');
                     quickActions.style.display = 'flex';
+                    if (window.innerWidth <= 1024) closeSidebar();
                     break;
                 case 'bible':
                     // Mostrar lista de livros, esconder atalhos
                     bibleNavPanel.classList.remove('hidden');
                     quickActions.style.display = 'none';
+                    if (window.innerWidth <= 1024) closeSidebar();
                     break;
                 case 'study':
                     // Abrir painel de estudo lateral
@@ -61,17 +63,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     studyPanel.classList.add('visible');
 
                     document.getElementById('app').classList.remove('panel-closed');
-                    if (window.innerWidth <= 1080) {
+                    if (window.innerWidth <= 1024) {
                         const panelBackdrop = document.querySelector('.panel-backdrop');
                         if (panelBackdrop) panelBackdrop.classList.add('visible');
                     }
                     // Manter atalhos
                     bibleNavPanel.classList.add('hidden');
                     quickActions.style.display = 'flex';
+                    if (window.innerWidth <= 1024) closeSidebar();
                     break;
             }
         });
     });
+
+    // Função global para mobile/tablet fechar a sidebar
+    function closeSidebar() {
+        sidebar.classList.remove('visible');
+        if (sidebarBackdrop) sidebarBackdrop.classList.remove('visible');
+    }
 
     // ============================================
     // MOBILE — Toggle Sidebar
@@ -92,10 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Fechar sidebar ao clicar no backdrop
-    sidebarBackdrop.addEventListener('click', () => {
-        sidebar.classList.remove('visible');
-        sidebarBackdrop.classList.remove('visible');
-    });
+    sidebarBackdrop.addEventListener('click', closeSidebar);
 
     // ============================================
     // MODAL DE CONFIGURAÇÕES
@@ -161,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const studyPanel = document.getElementById('study-panel');
         const panelBackdrop = document.querySelector('.panel-backdrop');
 
-        if (window.innerWidth <= 1080) {
+        if (window.innerWidth <= 1024) {
             // Mobile/Tablet — Painel lateral vira overlay
             if (studyPanel && !studyPanel.classList.contains('visible')) {
                 studyPanel.classList.add('hidden');
@@ -169,15 +175,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        if (window.innerWidth > 1080) {
+        if (window.innerWidth > 1024) {
             // Esconder backdrop overlay se virar monitor grande
             if (panelBackdrop) panelBackdrop.classList.remove('visible');
-        }
-
-        // Fechar sidebar esquerda em resize para desktop
-        if (window.innerWidth > 768) {
-            sidebar.classList.remove('visible');
-            sidebarBackdrop.classList.remove('visible');
+            // Fechar sidebar esquerda overlay state (desktop já mostra a sidebar perfeitamente alinhada)
+            closeSidebar();
         }
     });
 

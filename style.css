@@ -107,7 +107,7 @@ body {
 .app-layout {
   display: grid;
   grid-template-columns: var(--sidebar-width) 1fr var(--panel-width);
-  height: 100vh;
+  height: 100dvh;
   width: 100vw;
   overflow: hidden;
   transition: grid-template-columns var(--transition-base);
@@ -125,8 +125,9 @@ body {
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
+  height: 100dvh;
+  overflow-y: auto;
+  overflow-x: hidden;
   transition: transform var(--transition-slow);
   z-index: 100;
 }
@@ -446,7 +447,7 @@ body {
 .main-content {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
   background: var(--bg-primary);
   overflow: hidden;
 }
@@ -529,8 +530,10 @@ body {
   height: 18px;
 }
 
-.mobile-only {
-  display: none;
+@media (max-width: 1024px) {
+  .mobile-only {
+    display: flex;
+  }
 }
 
 /* Área de Mensagens */
@@ -956,7 +959,7 @@ body {
   border-left: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   transition: transform var(--transition-slow), width var(--transition-slow);
 }
@@ -1656,20 +1659,23 @@ body {
 }
 
 /* ================================================
-   RESPONSIVIDADE
+   RESPONSIVIDADE (TABLET & MOBILE)
    ================================================ */
 
-/* Tablets */
-@media (max-width: 1080px) {
-  .app-layout {
-    grid-template-columns: var(--sidebar-width) 1fr;
+/* Tablets & Mobile combinados (< 1024px) */
+@media (max-width: 1024px) {
+
+  .app-layout,
+  .app-layout.panel-closed {
+    grid-template-columns: 1fr;
   }
 
+  /* Painel de Estudo vira overlay na Direita */
   .study-panel {
     position: fixed;
     right: 0;
     top: 0;
-    height: 100vh;
+    height: 100dvh;
     width: var(--panel-width);
     z-index: 102;
     /* Maior que a sidebar */
@@ -1678,29 +1684,16 @@ body {
     transition: transform var(--transition-base);
   }
 
-  /* Grid tablet remove explicitamente a 3 coluna pois a direita é overlay */
-  .app-layout,
-  .app-layout.panel-closed {
-    grid-template-columns: var(--sidebar-width) 1fr;
-  }
-
   .study-panel.visible {
     transform: translateX(0);
   }
-}
 
-/* Mobile */
-@media (max-width: 768px) {
-
-  .app-layout,
-  .app-layout.panel-closed {
-    grid-template-columns: 1fr;
-  }
-
+  /* Sidebar Principal vira overlay na Esquerda */
   .sidebar {
     position: fixed;
     left: 0;
     top: 0;
+    height: 100dvh;
     width: var(--sidebar-width);
     z-index: 100;
     transform: translateX(-100%);
@@ -1727,7 +1720,7 @@ body {
     max-width: 95%;
   }
 
-  /* Leitor bíblico em mobile */
+  /* Leitor bíblico adaptações */
   .reader-nav-top {
     flex-wrap: wrap;
     gap: 8px;
@@ -1748,7 +1741,7 @@ body {
     justify-content: center;
   }
 
-  /* Cards de livro em mobile */
+  /* Cards de livro */
   .book-action-btn span {
     display: none;
   }
