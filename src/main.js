@@ -179,6 +179,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (panelBackdrop) panelBackdrop.classList.remove('visible');
             // Fechar sidebar esquerda overlay state (desktop já mostra a sidebar perfeitamente alinhada)
             closeSidebar();
+            // Mostrar painel de estudo permanentemente no desktop
+            if (studyPanel) {
+                studyPanel.classList.remove('hidden');
+                studyPanel.classList.add('visible');
+                document.getElementById('app').classList.remove('panel-closed');
+            }
         }
     });
 

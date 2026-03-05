@@ -18,9 +18,15 @@ export function initStudyPanel() {
     const studyNotesContent = document.getElementById('study-notes-content');
     const appLayout = document.getElementById('app');
 
-    // Sempre inicie com o layout do app fechado para o study panel
-    appLayout.classList.add('panel-closed');
-    studyPanel.classList.add('hidden');
+    // Iniciar painel lateral aberto se for PC, caso contrário fechado para mobile/tablet
+    if (window.innerWidth > 1024) {
+        appLayout.classList.remove('panel-closed');
+        studyPanel.classList.remove('hidden');
+        studyPanel.classList.add('visible');
+    } else {
+        appLayout.classList.add('panel-closed');
+        studyPanel.classList.add('hidden');
+    }
 
     // Criar backdrop para mobile
     let panelBackdrop = document.querySelector('.panel-backdrop');

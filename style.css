@@ -1792,3 +1792,12 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* Ocultar controles do painel lateral direito no Desktop, pois o painel deve aparecer sempre */
+@media (min-width: 1025px) {
+
+  #btn-toggle-panel,
+  #btn-close-panel {
+    display: none !important;
+  }
+}
