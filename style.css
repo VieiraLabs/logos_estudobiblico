@@ -441,6 +441,22 @@ body {
   padding: 8px 12px 0;
 }
 
+.sidebar-credits {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  padding: 4px 12px 0;
+}
+
+.sidebar-credits a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.sidebar-credits a:hover {
+  color: var(--accent);
+}
+
 /* ================================================
    ÁREA PRINCIPAL — CHAT
    ================================================ */
