@@ -59,28 +59,24 @@ export function parseMarkdown(text) {
     html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
     html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
 
-    // --- Linhas horizontais ---
-    html = html.replace(/^---$/gm, '<hr>');
+    // --- Blockquotes (incluindo linhas vazias com apenas o sinal >) ---
+    html = html.replace(/^&gt;\s*(.*?)$/gm, (match, p1) => {
+        return p1.trim() === '' ? '<br>' : `<blockquote>${p1}</blockquote>`;
+    });
 
-    // --- Blockquotes ---
-    html = html.replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>');
+    // --- Negrito e Itálico Avançados ---
+    // Negrito: **texto**
+    html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    
+    // Itálico: *texto* ou _texto_ (sem pegar dentro de palavras)
+    html = html.replace(/\b_([^_]+)_\b/g, '<em>$1</em>');
+    html = html.replace(/(?:^|[^\*])\*([^\*\n]+)\*(?=[^\*]|$)/g, '$&') // protecao asteriscos
+               .replace(/\*([^\*\n]+)\*/g, '<em>$1</em>');
 
-    // --- Listas não-ordenadas ---
+    // --- Listas não-ordenadas (* ou -) ---
     html = html.replace(/^[\*\-] (.+)$/gm, '<li>$1</li>');
     // Envolver LIs consecutivos em UL
-    html = html.replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>');
-
-    // --- Listas ordenadas ---
-    html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
-
-    // --- Código inline ---
-    html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
-
-    // --- Negrito ---
-    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-
-    // --- Itálico ---
-    html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    html = html.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
 
     // --- Emoji de versículo (manter como está) ---
     // Nenhuma transformação necessária; emojis são suportados nativamente
@@ -88,19 +84,20 @@ export function parseMarkdown(text) {
     // --- Links ---
     html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
 
-    // --- Parágrafos ---
-    // Converter linhas vazias duplas em quebras de parágrafo
+    // --- Parágrafos e Quebras de Linha ---
+    // Converter \n\n em fechamento e abertura de novo parágrafo
     html = html.replace(/\n\n/g, '</p><p>');
-    // Converter linhas simples em <br>
-    html = html.replace(/\n/g, '<br>');
+    // Converter um \n simples (desde que não esteja dentro de uma tag block-level estrutural)
+    html = html.replace(/(?<!>\s*)\n(?!\s*<)/g, '<br>');
 
-    // Envolver em parágrafo se não começar com tag de bloco
+    // Envolver todo o texto num grande contêiner de parágrafo (pular o q for tags grandes)
     if (!html.match(/^<(h[1-4]|ul|ol|table|pre|blockquote|hr)/)) {
         html = `<p>${html}</p>`;
     }
 
-    // Limpar parágrafos vazios
+    // Limpar restos
     html = html.replace(/<p>\s*<\/p>/g, '');
+    html = html.replace(/<br>\s*<\/p>/g, '</p>'); // Evitar espaçamento extra no fim do parágrafo
 
     return html;
 }

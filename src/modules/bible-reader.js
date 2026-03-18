@@ -33,12 +33,29 @@ export function initBibleReader() {
  * @param {number} chapters - Total de capítulos do livro
  */
 async function showReaderView(bookName, chapter, chapters) {
-    const chatMessages = document.getElementById('chat-messages');
+    const readerContainer = document.getElementById('bible-reader-container');
     const welcomeScreen = document.getElementById('welcome-screen');
     const chatTitle = document.getElementById('chat-title');
     const chatStatus = document.getElementById('chat-status');
 
-    // Esconder tela de boas-vindas
+    // Mudar para a view da Bíblia automaticamente
+    const viewChat = document.getElementById('view-chat');
+    const viewBible = document.getElementById('view-bible-reader');
+    const viewStudy = document.getElementById('view-study-hub');
+    
+    if (viewBible) {
+        if (viewChat) { viewChat.classList.remove('active'); viewChat.style.display = 'none'; }
+        if (viewStudy) { viewStudy.classList.remove('active'); viewStudy.style.display = 'none'; }
+        viewBible.classList.add('active');
+        viewBible.style.display = 'flex';
+        
+        // Atualizar estado ativo na sidebar
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        const bibleBtn = document.querySelector('.nav-item[data-section="bible"]');
+        if (bibleBtn) bibleBtn.classList.add('active');
+    }
+
+    // Esconder tela de boas-vindas do chat, se estiver na DOM (opcional, já que a view muda)
     if (welcomeScreen) welcomeScreen.style.display = 'none';
 
     // Atualizar header
@@ -47,8 +64,8 @@ async function showReaderView(bookName, chapter, chapters) {
         chatStatus.innerHTML = `<span class="status-dot"></span> Capítulo ${chapter} de ${chapters}`;
     }
 
-    // Limpar conteúdo
-    chatMessages.innerHTML = '';
+    // Limpar conteúdo anterior do leitor
+    if (readerContainer) readerContainer.innerHTML = '';
 
     // Criar container do leitor
     const readerEl = document.createElement('div');
@@ -100,7 +117,7 @@ async function showReaderView(bookName, chapter, chapters) {
     </div>
   `;
 
-    chatMessages.appendChild(readerEl);
+    if (readerContainer) readerContainer.appendChild(readerEl);
 
     // Inicializar ícones Lucide
     if (window.lucide) window.lucide.createIcons();
@@ -179,9 +196,20 @@ function setupReaderEvents(readerEl, bookName, chapters) {
                 chatStatus.innerHTML = '<span class="status-dot"></span> Online — Pronto para ajudar';
             }
 
-            // Limpar o leitor
-            const chatMessages = document.getElementById('chat-messages');
-            chatMessages.innerHTML = '';
+            // Mudar para a view Chat
+            const viewChat = document.getElementById('view-chat');
+            const viewBible = document.getElementById('view-bible-reader');
+            
+            if (viewChat && viewBible) {
+                viewBible.classList.remove('active');
+                viewBible.style.display = 'none';
+                viewChat.classList.add('active');
+                viewChat.style.display = 'flex';
+                
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                const chatBtn = document.querySelector('.nav-item[data-section="chat"]');
+                if (chatBtn) chatBtn.classList.add('active');
+            }
 
             // Enviar pergunta para o chat
             if (chatInput) {

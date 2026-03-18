@@ -10,6 +10,7 @@ import { initDevotional } from './modules/devotional.js';
 import { initBibleNav } from './modules/bible-nav.js';
 import { initBibleReader } from './modules/bible-reader.js';
 import { initStudyPanel } from './modules/study-panel.js';
+import { initStudyHub } from './modules/study-hub.js';
 
 // ============================================
 // INICIALIZAÇÃO DA APLICAÇÃO
@@ -26,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initBibleNav();                      // Navegação por livros
     initBibleReader();                   // Leitor bíblico
     initStudyPanel();                    // Painel de estudo
+    initStudyHub();                      // Hub de Estudos Central
 
     // ============================================
     // NAVEGAÇÃO DA SIDEBAR
@@ -42,21 +44,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const section = item.dataset.section;
 
+            // Atualizar visibilidade das main-views
+            const viewChat = document.getElementById('view-chat');
+            const viewBible = document.getElementById('view-bible-reader');
+            const viewStudy = document.getElementById('view-study-hub');
+            const chatTitle = document.getElementById('chat-title');
+            const chatStatus = document.getElementById('chat-status');
+
+            // Resetar views
+            if (viewChat) { viewChat.classList.remove('active'); viewChat.style.display = 'none'; }
+            if (viewBible) { viewBible.classList.remove('active'); viewBible.style.display = 'none'; }
+            if (viewStudy) { viewStudy.classList.remove('active'); viewStudy.style.display = 'none'; }
+
             // Mostrar/esconder painéis com base na seção
             switch (section) {
                 case 'chat':
+                    if (viewChat) { viewChat.classList.add('active'); viewChat.style.display = 'flex'; }
+                    if (chatTitle) chatTitle.textContent = 'Assistente Bíblico';
+                    if (chatStatus) chatStatus.innerHTML = '<span class="status-dot"></span> Online — Pronto para ajudar';
+
                     // Mostrar atalhos rápidos, esconder livros
                     bibleNavPanel.classList.add('hidden');
                     quickActions.style.display = 'flex';
                     if (window.innerWidth <= 1024) closeSidebar();
                     break;
                 case 'bible':
+                    if (viewBible) { viewBible.classList.add('active'); viewBible.style.display = 'flex'; }
+                    // Não reescrever o título da bíblia se já houver um capítulo carregado
+                    if (chatTitle && chatTitle.textContent === 'Assistente Bíblico' || chatTitle.textContent === 'Hub de Estudos') {
+                        chatTitle.textContent = 'Leitura Bíblica';
+                        if (chatStatus) chatStatus.innerHTML = 'Selecione um capítulo na barra lateral';
+                    }
+
                     // Mostrar lista de livros, esconder atalhos
                     bibleNavPanel.classList.remove('hidden');
                     quickActions.style.display = 'none';
+                    if (window.innerWidth <= 1024) closeSidebar(); // No mobile, se abriu 'Bíblia', talvez ele deva ver os livros antes de ler?
+                    // Retirado closeSidebar() para ele poder clicar nos livros.
                     break;
                 case 'study':
-                    // Abrir painel de estudo lateral
+                    if (viewStudy) { viewStudy.classList.add('active'); viewStudy.style.display = 'flex'; }
+                    if (chatTitle) chatTitle.textContent = 'Hub de Estudos';
+                    if (chatStatus) chatStatus.innerHTML = 'Explore e mergulhe fundo na Palavra';
+
+                    // Abrir painel de estudo lateral (se for o caso)
                     const studyPanel = document.getElementById('study-panel');
                     studyPanel.classList.remove('hidden');
                     studyPanel.classList.add('visible');
