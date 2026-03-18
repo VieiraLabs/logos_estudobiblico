@@ -27,8 +27,8 @@
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
   <!-- CSS Principal -->
-  <script type="module" crossorigin src="/logos_estudobiblico/assets/index-BytMtOoy.js"></script>
-  <link rel="stylesheet" crossorigin href="/logos_estudobiblico/assets/index-CyR0GfHD.css">
+  <script type="module" crossorigin src="/logos_estudobiblico/assets/index-CILKMR_e.js"></script>
+  <link rel="stylesheet" crossorigin href="/logos_estudobiblico/assets/index-DwpyzX9m.css">
 </head>
 
 <body>
@@ -124,9 +124,9 @@
       </div>
     </aside>
 
-    <!-- ========== ÁREA PRINCIPAL — CHAT ========== -->
+    <!-- ========== ÁREA PRINCIPAL ========== -->
     <main id="main-content" class="main-content">
-      <!-- Header do Chat -->
+      <!-- Header Compartilhado (Pode ter seu conteúdo dinamicamente alterado) -->
       <header class="chat-header">
         <button id="btn-toggle-sidebar" class="btn-icon mobile-only">
           <i data-lucide="menu"></i>
@@ -143,55 +143,77 @@
         </button>
       </header>
 
-      <!-- Área das Mensagens -->
-      <div id="chat-messages" class="chat-messages">
-        <!-- Mensagem de boas-vindas -->
-        <div class="welcome-screen" id="welcome-screen">
-          <div class="welcome-icon">
-            <i data-lucide="book-open-text"></i>
-          </div>
-          <h2>Shalom! ✨</h2>
-          <p>Sou o <strong>Logos</strong>, seu assistente bíblico digital baseado na <strong>Nova Versão Transformadora
-              (NVT)</strong>.</p>
-          <p class="welcome-subtitle">Posso ajudar com estudo bíblico, explicar passagens, tirar dúvidas teológicas e
-            fornecer devocionais diários.</p>
+      <!-- Container de Views -->
+      <div id="views-container" class="views-container" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative;">
+        
+        <!-- VIEW 1: CHAT (Ativa por padrão) -->
+        <section id="view-chat" class="main-view active" style="flex: 1; display: flex; flex-direction: column; min-height: 0;">
+          <!-- Área das Mensagens -->
+          <div id="chat-messages" class="chat-messages">
+            <!-- Mensagem de boas-vindas -->
+            <div class="welcome-screen" id="welcome-screen">
+              <div class="welcome-icon">
+                <i data-lucide="book-open-text"></i>
+              </div>
+              <h2>Shalom! ✨</h2>
+              <p>Sou o <strong>Logos</strong>, seu assistente bíblico digital baseado na <strong>Nova Versão Transformadora
+                  (NVT)</strong>.</p>
+              <p class="welcome-subtitle">Posso ajudar com estudo bíblico, explicar passagens, tirar dúvidas teológicas e
+                fornecer devocionais diários.</p>
 
-          <div class="welcome-cards">
-            <button class="welcome-card"
-              data-prompt="O que significa a passagem onde Jesus fala que não veio abolir a lei?">
-              <i data-lucide="scroll-text"></i>
-              <span>Explicar uma passagem</span>
-              <small>Ex: Mateus 5:17</small>
-            </button>
-            <button class="welcome-card" data-prompt="Me dê um versículo para hoje com uma reflexão prática.">
-              <i data-lucide="sunrise"></i>
-              <span>Versículo do dia</span>
-              <small>Devocional diário</small>
-            </button>
-            <button class="welcome-card" data-prompt="Por que o Livro de Enoque não está na minha Bíblia?">
-              <i data-lucide="help-circle"></i>
-              <span>Tirar uma dúvida</span>
-              <small>Apologética e curiosidades</small>
-            </button>
-            <button class="welcome-card" data-prompt="Me dê um resumo panorâmico do livro de Gênesis.">
-              <i data-lucide="telescope"></i>
-              <span>Estudar um livro</span>
-              <small>Visão panorâmica</small>
-            </button>
+              <div class="welcome-cards">
+                <button class="welcome-card"
+                  data-prompt="O que significa a passagem onde Jesus fala que não veio abolir a lei?">
+                  <i data-lucide="scroll-text"></i>
+                  <span>Explicar uma passagem</span>
+                  <small>Ex: Mateus 5:17</small>
+                </button>
+                <button class="welcome-card" data-prompt="Me dê um versículo para hoje com uma reflexão prática.">
+                  <i data-lucide="sunrise"></i>
+                  <span>Versículo do dia</span>
+                  <small>Devocional diário</small>
+                </button>
+                <button class="welcome-card" data-prompt="Por que o Livro de Enoque não está na minha Bíblia?">
+                  <i data-lucide="help-circle"></i>
+                  <span>Tirar uma dúvida</span>
+                  <small>Apologética e curiosidades</small>
+                </button>
+                <button class="welcome-card" data-prompt="Me dê um resumo panorâmico do livro de Gênesis.">
+                  <i data-lucide="telescope"></i>
+                  <span>Estudar um livro</span>
+                  <small>Visão panorâmica</small>
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <!-- Input de Mensagem -->
-      <div class="chat-input-area">
-        <div class="chat-input-container">
-          <textarea id="chat-input" class="chat-input" placeholder="Pergunte sobre a Bíblia..." rows="1"
-            aria-label="Campo de mensagem para o assistente bíblico"></textarea>
-          <button id="btn-send" class="btn-send" disabled aria-label="Enviar mensagem">
-            <i data-lucide="send-horizontal"></i>
-          </button>
-        </div>
-        <p class="chat-disclaimer">Logos utiliza IA para auxiliar no estudo. Sempre confirme com sua Bíblia NVT.</p>
+          <!-- Input de Mensagem -->
+          <div class="chat-input-area">
+            <div class="chat-input-container">
+              <textarea id="chat-input" class="chat-input" placeholder="Pergunte sobre a Bíblia..." rows="1"
+                aria-label="Campo de mensagem para o assistente bíblico"></textarea>
+              <button id="btn-send" class="btn-send" disabled aria-label="Enviar mensagem">
+                <i data-lucide="send-horizontal"></i>
+              </button>
+            </div>
+            <p class="chat-disclaimer">Logos utiliza IA para auxiliar no estudo. Sempre confirme com sua Bíblia NVT.</p>
+          </div>
+        </section>
+
+        <!-- VIEW 2: BIBLE READER -->
+        <section id="view-bible-reader" class="main-view hidden" style="flex: 1; display: none; flex-direction: column; min-height: 0;">
+          <div id="bible-reader-container" class="bible-reader-container" style="flex: 1; overflow-y: auto;">
+             <!-- Conteúdo injetado por bible-reader.js -->
+          </div>
+        </section>
+
+        <!-- VIEW 3: STUDY HUB -->
+        <section id="view-study-hub" class="main-view hidden" style="flex: 1; display: none; flex-direction: column; min-height: 0; padding: 20px; overflow-y: auto;">
+          <div id="study-hub-container" class="study-hub-container">
+             <!-- Conteúdo injetado por study-hub.js -->
+          </div>
+        </section>
+
       </div>
     </main>
 
